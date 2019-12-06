@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" id="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
+<script type="text/javascript" charset="utf-8" src="phonegap.js"></script>
+<script type="text/javascript" charset="utf-8">
+
+
+var directorio = "file:///storage/emulated/0";
+var nombreArchivo = "archivoPhonegap.txt";
+
+   document.addEventListener("deviceready", onDeviceReady, false);
+   
+   function onDeviceReady() {
+
+
+           }
+
+function escribir(){
+	var directorio = "file:///storage/emulated/0";
+var nombreArchivo = "archivoPhonegap.txt";
+
+window.resolveLocalFileSystemURL(directorio, function(dir) {
+	dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
+		
+		fileEntry.createWriter(gotFileWriter, fail);
+	});
+});
+
+function gotFileWriter(writer) {
+        writer.write("Esta es una escritura en PhoneGap");
+	}
+	
+	function fail(error) {
+        alert(error.code);
+    }
+
+}
+
+function leer() {
+	
+
+	var directorio = "file:///storage/emulated/0";
+var nombreArchivo = "archivoPhonegap.txt";
+
+window.resolveLocalFileSystemURL(directorio, function(dir) {
+	dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
+		
+		fileEntry.file(function(file) {
+		var reader = new FileReader();
+
+		reader.onloadend = function(e) {
+			
+			document.querySelector("#textArea").innerHTML = this.result;
+		}
+
+		reader.readAsText(file);
+	});
+	});
+});
+
+
+}
+
+function metas() {
+	
+
+	var directorio = "file:///storage/emulated/0";
+var nombreArchivo = "archivoPhonegap.txt";
+
+window.resolveLocalFileSystemURL(directorio, function(dir) {
+	dir.getFile(nombreArchivo, {create:true}, function(fileEntry) {
+		
+		fileEntry.getMetadata(function(metadata) {
+		
+			alert("Hora de modificación: " + metadata.modificationTime);
+		
+	});
+	});
+});
+
+
+}
+
+
+</script>
+</head>
+<body>
+		<br/><br/>	<br/><br/>
+	<input type="button" onclick="escribir();" value="Escribir"/><br/><br/>
+	<input type="button" onclick="leer();" value="Leer"/><br/><br/>
+	<input type="button" onclick="metas();" value="Metadata"/><br/><br/>
+	
+
+	<textarea id="textArea" style="width: 100%;" rows="4"></textarea>
+	
+</body>
+</html>
